@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RocketseatAuction.API.Contracts;
 using RocketseatAuction.API.Entities;
 using RocketseatAuction.API.Repositories;
 
@@ -6,15 +7,9 @@ namespace RocketseatAuction.API.UseCases.Auctions.GetCurrent;
 
 public class GetCurrentAuctionUseCase
 {
-    public Auction? Execute()
-    {
-        var repository = new RocketseatAuctionDbContext();
+    private readonly IAuctionRepository _repository;
 
-        //var today = DateTime.Now;
+    public GetCurrentAuctionUseCase(IAuctionRepository repository) => _repository = repository;
 
-        return repository
-            .Auctions
-            .Include(auction => auction.Items)
-            .First();
-    }
+    public Auction? Execute() => _repository.GetCurrent();
 }
